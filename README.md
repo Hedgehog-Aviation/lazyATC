@@ -8,3 +8,9 @@ Auto routing coming soon....
  - Install Python
  - Download the lazyatc.py file
  - Run the lazyatc.py file
+
+# Usage Instructions
+Two modes, incorrect altitude and invalid route
+For invalid route mode, enter the departure and destination airport then hit "generate routes" and select one
+For invalid altitude mode, enter filed FL
+For both modes, press ENTER to generate the message and copy it to clipboard
