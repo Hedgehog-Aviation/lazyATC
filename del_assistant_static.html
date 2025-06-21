@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DEL Assistant (Static)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 700px; }
+    label, input, select, textarea, button { display: block; width: 100%; margin: 10px 0; }
+    textarea { height: 100px; }
+    #route-list { height: 80px; }
+    .section { display: none; }
+  </style>
+</head>
+<body>
+  <h2>DEL Assistant (Static Version)</h2>
+
+  <label>
+    <input type="radio" name="mode" value="Invalid Route" checked> Invalid Route
+  </label>
+  <label>
+    <input type="radio" name="mode" value="Non-Standard Altitude"> Non-Standard Altitude
+  </label>
+
+  <div id="route-section" class="section">
+    <label>Departure Airport:
+      <input type="text" id="dept">
+    </label>
+    <label>Destination Airport:
+      <input type="text" id="dest">
+    </label>
+    <button onclick="fetchRoutes()">Get Routes</button>
+
+    <label>Available Routes:
+      <select id="route-list" size="5"></select>
+    </label>
+
+    <label>Override Route:
+      <input type="text" id="override">
+    </label>
+  </div>
+
+  <div id="altitude-section" class="section">
+    <label>Filed Flight Level:
+      <input type="number" id="filed-fl">
+    </label>
+  </div>
+
+  <button onclick="generateMessage()">Generate Message</button>
+
+  <label>Generated Message:
+    <textarea id="output" readonly></textarea>
+  </label>
+  <button onclick="copyMessage()">📋 Copy to Clipboard</button>
+
+<script>
+  const templates = {
+    "Invalid Route": "Hi, your planned route seems to be invalid. Can you accept amended routing via {route}?",
+    "Non-Standard Altitude": "Hi, your altitude is non-standard. I can offer you either {fl1} or {fl2}."
+  };
+
+  document.querySelectorAll('input[name="mode"]').forEach(r => {
+    r.addEventListener("change", updateMode);
+  });
+
+  function updateMode() {
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    document.getElementById("route-section").style.display = mode === "Invalid Route" ? "block" : "none";
+    document.getElementById("altitude-section").style.display = mode === "Non-Standard Altitude" ? "block" : "none";
+  }
+
+  async function fetchRoutes() {
+    const dept = document.getElementById("dept").value.trim().toUpperCase();
+    const dest = document.getElementById("dest").value.trim().toUpperCase();
+    const list = document.getElementById("route-list");
+    list.innerHTML = "";
+
+    if (!dept || !dest) {
+      alert("Please enter both departure and destination airports.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://api.chrisgardiner.org/routes?dept=${dept}&dest=${dest}`);
+      const data = await res.json();
+
+      data.routes.forEach(r => {
+        const option = document.createElement("option");
+        option.value = r.route;
+        option.textContent = `${r.acft || "Any"} | ${r.route}`;
+        list.appendChild(option);
+      });
+    } catch (err) {
+      alert("Error fetching routes: " + err.message);
+    }
+  }
+
+  function generateMessage() {
+    const mode = document.querySelector('input[name="mode"]:checked').value;
+    let message = "";
+
+    if (mode === "Invalid Route") {
+      const override = document.getElementById("override").value.trim();
+      const selected = document.getElementById("route-list").value;
+      const route = override || selected;
+      if (!route) {
+        alert("Please select or enter a route.");
+        return;
+      }
+      message = templates["Invalid Route"].replace("{route}", route);
+    } else if (mode === "Non-Standard Altitude") {
+      const filed = parseInt(document.getElementById("filed-fl").value);
+      if (isNaN(filed)) {
+        alert("Please enter a valid flight level.");
+        return;
+      }
+      const fl1 = "FL" + String(filed - 10).padStart(3, "0");
+      const fl2 = "FL" + String(filed + 10).padStart(3, "0");
+      message = templates["Non-Standard Altitude"]
+                  .replace("{fl1}", fl1)
+                  .replace("{fl2}", fl2);
+    }
+
+    document.getElementById("output").value = message;
+  }
+
+  function copyMessage() {
+    const output = document.getElementById("output");
+    output.select();
+    document.execCommand("copy");
+    alert("Copied to clipboard!");
+  }
+
+  // Initialize
+  updateMode();
+</script>
+</body>
+</html>
