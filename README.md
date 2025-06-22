@@ -13,4 +13,7 @@ Two modes, incorrect altitude and invalid route:
 For invalid route mode, enter the departure and destination airport then hit "generate routes" and select one  
 For invalid altitude mode, enter filed FL  
 For both modes, press ENTER to generate the message and copy it to clipboard
+# Web version!
+Are you too lazy to download lazyatc? wow...  
+That's OK! Simply head to atc.bobtu.be for an almost-working web version of the app!
 
