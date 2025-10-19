@@ -3,7 +3,7 @@ Tired of sending messages to people with outdated simbrief? Now you can do it 57
 
 This tool allows you to quickly get message templates to let people know that, in fact, you can NOT file through RIVET outbound YSSY 💀
 Operation is quite simple, you enter the correct route, then just hit enter, then copy. Now you have the whole thing ready to paste into the chat and watch the pilot realise they are a child of simbrief.
-Auto routing coming soon....
+Auto routing is available
 # Installation Instructions
 - Choose your version
    - We offer a web app, a standalone EXE, and a VatSys plugin
@@ -22,3 +22,4 @@ For both modes, press ENTER to generate the message and copy it to clipboard
 Are you too lazy to download lazyatc? wow...  
 That's OK! Simply head to atc.bobtu.be for an almost-working web version of the app!
 
+LazyATC is not an official product of VATSIM, VATPAC, or VatSys. It is a plugin designed for personal use. Absolutely no warranty is provided. Use of the plugin is at the user's discretion. Not for commercial use
