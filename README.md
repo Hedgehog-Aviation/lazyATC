@@ -5,9 +5,13 @@ This tool allows you to quickly get message templates to let people know that, i
 Operation is quite simple, you enter the correct route, then just hit enter, then copy. Now you have the whole thing ready to paste into the chat and watch the pilot realise they are a child of simbrief.
 Auto routing coming soon....
 # Installation Instructions
- - Download the latest release
- - Run the exe
- - No install required, this is a portable application
+ - Choose your version
+  - We offer a web app, a standalone EXE, and a VatSys plugin
+ - Install/access
+  - For our webapp, head to atc.bobtu.be
+  - The standalone .exe is in the latest release
+  - The VatSys plugin .zip is in the latest release
+ - Have fun!
 # Usage Instructions
 Two modes, incorrect altitude and invalid route:  
 For invalid route mode, enter the departure and destination airport then hit "generate routes" and select one  
