@@ -1,9 +1,9 @@
 # LazyATC
 Tired of sending messages to people with outdated simbrief? Now you can do it 57% faster!
 
-This tool allows you to quickly get message templates to let people know that, in fact, you can NOT file through RIVET outbound YSSY 💀
-Operation is quite simple, you enter the correct route, then just hit enter, then copy. Now you have the whole thing ready to paste into the chat and watch the pilot realise they are a child of simbrief.
-Auto routing is available
+This tool allows you to quickly message pilots to let them know that they've got an issue somewhere in their flight plan. It contains preset templates, requiring only the departure and arrival airports of the offending pilot. Then simply select the right route, and press `ENTER`, then you have a cheery and polite message ready to go, ready to paste into pilot messages.
+Auto routing is available as of V1.1.0 - draws from the wonderful Pilot Assist API to serve correct routes, making usage of the tool far easier (Still watch out for V169s though!)
+
 # Installation Instructions
 - Choose your version
    - We offer a web app, a standalone EXE, and a VatSys plugin
