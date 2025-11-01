@@ -5,21 +5,29 @@ This tool allows you to quickly message pilots to let them know that they've got
 Auto routing is available as of V1.1.0 - draws from the wonderful Pilot Assist API to serve correct routes, making usage of the tool far easier (Still watch out for V169s though!)
 
 # Installation Instructions
-- Choose your version
-   - We offer a web app, a standalone EXE, and a VatSys plugin
-- Install/access
-   - For our webapp, head to atc.bobtu.be
-   - The standalone .exe is in the latest release
-   - The VatSys plugin .zip is in the latest release
-- Have fun!
-- Report problems on the issues page when they inevitably appear
-# Usage Instructions
-Two modes, incorrect altitude and invalid route:  
-For invalid route mode, enter the departure and destination airport then hit "generate routes" and select one  
-For invalid altitude mode, enter filed FL  
-For both modes, press ENTER to generate the message and copy it to clipboard
-# Web version!
-Are you too lazy to download lazyatc? wow...  
-That's OK! Simply head to atc.bobtu.be for an almost-working web version of the app!
+### We offer three ways to use LazyATC - a VatSys plugin, web application, and standalone executable
+#### Web application
+- Simply visit https://atc.bobtube.org - no install required!
+#### VatSys plugin
+- Download the VatSys plugin zip archive from the [latest release](github.com/Hedgehog-Aviation/lazyATC/releases/latest)
+- Unblock the zip file by right-clicking on it, selecting Properties, then Unblock
+- Extract the zip into `[YOUR CURRENT DRIVE]\Program Files (x86)\vatSys\bin\Plugins`
+- Make sure the zip file is unblocked **before** attempting to extract or use the plugin
+#### Standalone executable (Not recommended, currently not high priority)
+- Simply install the Standalone exe from the [latest release](github.com/Hedgehog-Aviation/lazyATC/releases/latest) and run.
+- You may need to press "keep" or "Download anyway" in some browsers, if they prompt you
 
-LazyATC is not an official product of VATSIM, VATPAC, or VatSys. It is a plugin designed for personal use. Absolutely no warranty is provided. Use of the plugin is at the user's discretion. Not for commercial use
+# Usage Instructions
+### There are two modes, the "Route" and "Altitude" modes.
+#### Route mode: 
+- Enter the aircraft's planned arrival and departure aerodromes in ICAO format
+- Press "Generate"
+- Select a valid route and press `ENTER`
+- Now you will have the following message copied to your clipboard: `Hi, your planned route seems to be invalid. Can you accept amended routing via {route}?`
+#### Altitude mode (Not recommended, easier to simply ask on frequency)
+- Enter the aircraft's planned altitude
+- Press "Generate"
+- Now you will have the following message copied to your clipboard: `Hi, your altitude is non-standard. I can offer you either {fl1} or {fl2}.`
+
+
+<sub> LazyATC is not an official product of VATSIM, VATPAC, or VatSys. It is a tool designed for personal use. Absolutely no warranty is provided. Use of the tool is at the user's discretion. Not for commercial use. </sub>
