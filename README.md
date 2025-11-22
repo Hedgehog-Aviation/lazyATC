@@ -10,13 +10,15 @@ Auto routing is available as of V1.1.0 - draws from the wonderful Pilot Assist A
 - Simply visit https://atc.bobtube.org - no install required!
 ### VatSys plugin
 
+#### Automatic Method (prefferred)
+- Install using the [VatSysManager app](https://github.com/Hedgehog-Aviation/vatManager-fork)
+
 #### Manual Method
 - Download the VatSys plugin zip archive from the [latest release](github.com/Hedgehog-Aviation/lazyATC/releases/latest)
 - Unblock the zip file by right-clicking on it, selecting Properties, then Unblock
 - Extract the zip into `[YOUR CURRENT DRIVE]\Program Files (x86)\vatSys\bin\Plugins`
 - Make sure the zip file is unblocked **before** attempting to extract or use the plugin
-#### Automatic Method
-- Install using the [VatSysManager app](https://github.com/Hedgehog-Aviation/vatManager-fork)
+
 ### Standalone executable (Not recommended, currently not high priority)
 - Simply install the Standalone exe from the [latest release](github.com/Hedgehog-Aviation/lazyATC/releases/latest) and run.
 - You may need to press "keep" or "Download anyway" in some browsers, if they prompt you
