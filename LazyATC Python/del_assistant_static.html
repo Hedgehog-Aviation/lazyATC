@@ -213,7 +213,12 @@
       return null;
     }
 
-    const res = await fetch(`https://api.chrisgardiner.org/routes?dept=${dept}&dest=${dest}`);
+    const res = await fetch(
+      `https://api.chrisgardiner.org/routes?dept=${encodeURIComponent(dept)}&dest=${encodeURIComponent(dest)}`
+    );
+    if (!res.ok) {
+      throw new Error(`Route API request failed (${res.status})`);
+    }
     const data = await res.json();
     return data.routes || [];
   }
@@ -314,8 +319,12 @@
     navigator.clipboard.writeText(output.value)
       .then(() => alert("Copied to clipboard!"))
       .catch(() => {
-        document.execCommand("copy");
-        alert("Copied to clipboard!");
+        if (typeof document.execCommand === "function") {
+          document.execCommand("copy");
+          alert("Copied to clipboard!");
+          return;
+        }
+        alert("Unable to copy automatically. Please copy the message manually.");
       });
   }
 
