@@ -192,6 +192,7 @@
     "Non-Standard Altitude": "Hi, your altitude is non-standard. I can offer you either {fl1} or {fl2}."
   };
   const ROUTES_API_BASE_URL = "https://api.chrisgardiner.org/routes";
+  const COPY_SUCCESS_MESSAGE = "Copied to clipboard!";
 
   const routeStatus = document.getElementById("route-status");
 
@@ -322,11 +323,11 @@
     const output = document.getElementById("output");
     output.select();
     navigator.clipboard.writeText(output.value)
-      .then(() => alert("Copied to clipboard!"))
+      .then(() => alert(COPY_SUCCESS_MESSAGE))
       .catch(() => {
-        if (typeof document.execCommand === "function") {
+        if (document.execCommand) {
           const copied = document.execCommand("copy");
-          alert(copied ? "Copied to clipboard!" : "Unable to copy automatically. Please copy the message manually.");
+          alert(copied ? COPY_SUCCESS_MESSAGE : "Unable to copy automatically. Please copy the message manually.");
           return;
         }
         alert("Unable to copy automatically. Please copy the message manually.");
