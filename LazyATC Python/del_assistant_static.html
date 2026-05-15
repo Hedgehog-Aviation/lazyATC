@@ -265,7 +265,7 @@
       if (!routes) return;
 
       const validRoutes = routes
-        .map(r => r.route || "")
+        .map(r => r.route)
         .filter(Boolean);
       const filedRoute = normalizeRoute(filedRouteRaw);
       const isValid = validRoutes.some(r => normalizeRoute(r) === filedRoute);
