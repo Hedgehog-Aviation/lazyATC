@@ -2,61 +2,197 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DEL Assistant (Static)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LazyATC (Static)</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 700px; }
-    label, input, select, textarea, button { display: block; width: 100%; margin: 10px 0; }
-    textarea { height: 100px; }
-    #route-list { height: 80px; }
+    :root {
+      --bg: #0b1220;
+      --panel: #101a2f;
+      --panel-border: #223251;
+      --text: #e7ecf8;
+      --muted: #9db0d1;
+      --accent: #62a5ff;
+      --success: #4ade80;
+      --error: #f87171;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(160deg, #0b1220 0%, #12213f 100%);
+      color: var(--text);
+    }
+
+    .app {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 24px;
+      border-radius: 16px;
+      border: 1px solid var(--panel-border);
+      background: rgba(16, 26, 47, 0.94);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.6rem;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .mode-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .mode-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      background: #0f1a33;
+    }
+
     .section { display: none; }
+
+    label {
+      display: block;
+      margin: 10px 0 6px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: #0d162c;
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 0.95rem;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(98, 165, 255, 0.2);
+    }
+
+    select { min-height: 120px; }
+    textarea { height: 110px; resize: vertical; }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      background: linear-gradient(135deg, #2f8cff 0%, #3572ff 100%);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.08s ease, filter 0.15s ease;
+    }
+
+    button:hover { filter: brightness(1.08); }
+    button:active { transform: translateY(1px); }
+
+    #route-status {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      color: var(--muted);
+      background: #0d162c;
+    }
+
+    #route-status.valid {
+      border-color: rgba(74, 222, 128, 0.45);
+      color: #c3f7d7;
+      background: rgba(74, 222, 128, 0.12);
+    }
+
+    #route-status.invalid {
+      border-color: rgba(248, 113, 113, 0.45);
+      color: #ffd4d4;
+      background: rgba(248, 113, 113, 0.12);
+    }
   </style>
 </head>
 <body>
-  <h2>DEL Assistant (Static Version)</h2>
+  <main class="app">
+    <h1>LazyATC</h1>
+    <p class="subtitle">Static helper for route and altitude coordination.</p>
 
-  <label>
-    <input type="radio" name="mode" value="Invalid Route" checked> Invalid Route
-  </label>
-  <label>
-    <input type="radio" name="mode" value="Non-Standard Altitude"> Non-Standard Altitude
-  </label>
+    <div class="mode-group">
+      <label class="mode-option">
+        <input type="radio" name="mode" value="Invalid Route" checked> Invalid Route
+      </label>
+      <label class="mode-option">
+        <input type="radio" name="mode" value="Non-Standard Altitude"> Non-Standard Altitude
+      </label>
+    </div>
 
-  <div id="route-section" class="section">
-    <label>Departure Airport:
-      <input type="text" id="dept">
-    </label>
-    <label>Destination Airport:
-      <input type="text" id="dest">
-    </label>
-    <button onclick="fetchRoutes()">Get Routes</button>
+    <div id="route-section" class="section">
+      <label for="dept">Departure Airport</label>
+      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4">
 
-    <label>Available Routes:
+      <label for="dest">Destination Airport</label>
+      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4">
+
+      <label for="filed-route">Filed Route to Check</label>
+      <input type="text" id="filed-route" placeholder="Enter full filed route">
+
+      <div class="button-row">
+        <button onclick="fetchRoutes()">Get Routes</button>
+        <button onclick="checkRoute()">Check Route</button>
+      </div>
+
+      <div id="route-status">No route check performed yet.</div>
+
+      <label for="route-list">Available Routes</label>
       <select id="route-list" size="5"></select>
-    </label>
 
-    <label>Override Route:
-      <input type="text" id="override">
-    </label>
-  </div>
+      <label for="override">Override Route</label>
+      <input type="text" id="override" placeholder="Optional manual amended route">
+    </div>
 
-  <div id="altitude-section" class="section">
-    <label>Filed Flight Level:
-      <input type="number" id="filed-fl">
-    </label>
-  </div>
+    <div id="altitude-section" class="section">
+      <label for="filed-fl">Filed Flight Level</label>
+      <input type="number" id="filed-fl" placeholder="e.g. 330">
+    </div>
 
-  <button onclick="generateMessage()">Generate Message</button>
+    <button onclick="generateMessage()">Generate Message</button>
 
-  <label>Generated Message:
+    <label for="output">Generated Message</label>
     <textarea id="output" readonly></textarea>
-  </label>
-  <button onclick="copyMessage()">📋 Copy to Clipboard</button>
+    <button onclick="copyMessage()">📋 Copy to Clipboard</button>
+  </main>
 
 <script>
   const templates = {
     "Invalid Route": "Hi, your planned route seems to be invalid. Can you accept amended routing via {route}?",
     "Non-Standard Altitude": "Hi, your altitude is non-standard. I can offer you either {fl1} or {fl2}."
   };
+
+  const routeStatus = document.getElementById("route-status");
 
   document.querySelectorAll('input[name="mode"]').forEach(r => {
     r.addEventListener("change", updateMode);
@@ -68,29 +204,78 @@
     document.getElementById("altitude-section").style.display = mode === "Non-Standard Altitude" ? "block" : "none";
   }
 
-  async function fetchRoutes() {
+  async function getRoutesForPair() {
     const dept = document.getElementById("dept").value.trim().toUpperCase();
     const dest = document.getElementById("dest").value.trim().toUpperCase();
-    const list = document.getElementById("route-list");
-    list.innerHTML = "";
 
     if (!dept || !dest) {
       alert("Please enter both departure and destination airports.");
+      return null;
+    }
+
+    const res = await fetch(`https://api.chrisgardiner.org/routes?dept=${dept}&dest=${dest}`);
+    const data = await res.json();
+    return data.routes || [];
+  }
+
+  function renderRoutes(routes) {
+    const list = document.getElementById("route-list");
+    list.innerHTML = "";
+
+    routes.forEach(r => {
+      const option = document.createElement("option");
+      option.value = r.route || "";
+      option.textContent = `${r.acft || "Any"} | ${r.route || "(No route)"}`;
+      list.appendChild(option);
+    });
+  }
+
+  async function fetchRoutes() {
+    try {
+      const routes = await getRoutesForPair();
+      if (!routes) return;
+      renderRoutes(routes);
+      routeStatus.className = "";
+      routeStatus.textContent = routes.length
+        ? `Loaded ${routes.length} route${routes.length === 1 ? "" : "s"}.`
+        : "No routes found for this city pair.";
+    } catch (err) {
+      alert("Error fetching routes: " + err.message);
+    }
+  }
+
+  function normalizeRoute(value) {
+    return value.replace(/\s+/g, " ").trim().toUpperCase();
+  }
+
+  async function checkRoute() {
+    const filedRouteRaw = document.getElementById("filed-route").value.trim();
+    if (!filedRouteRaw) {
+      alert("Please enter the filed route to check.");
       return;
     }
 
     try {
-      const res = await fetch(`https://api.chrisgardiner.org/routes?dept=${dept}&dest=${dest}`);
-      const data = await res.json();
+      const routes = await getRoutesForPair();
+      if (!routes) return;
 
-      data.routes.forEach(r => {
-        const option = document.createElement("option");
-        option.value = r.route;
-        option.textContent = `${r.acft || "Any"} | ${r.route}`;
-        list.appendChild(option);
-      });
+      const validRoutes = routes
+        .map(r => r.route || "")
+        .filter(Boolean);
+      const filedRoute = normalizeRoute(filedRouteRaw);
+      const isValid = validRoutes.some(r => normalizeRoute(r) === filedRoute);
+
+      if (isValid) {
+        routeStatus.className = "valid";
+        routeStatus.textContent = "Filed route is valid for this city pair.";
+      } else {
+        routeStatus.className = "invalid";
+        routeStatus.textContent = "Filed route does not match known valid routes. Showing suggested routes below.";
+      }
+
+      renderRoutes(routes);
     } catch (err) {
-      alert("Error fetching routes: " + err.message);
+      alert("Error checking route: " + err.message);
     }
   }
 
@@ -126,8 +311,12 @@
   function copyMessage() {
     const output = document.getElementById("output");
     output.select();
-    document.execCommand("copy");
-    alert("Copied to clipboard!");
+    navigator.clipboard.writeText(output.value)
+      .then(() => alert("Copied to clipboard!"))
+      .catch(() => {
+        document.execCommand("copy");
+        alert("Copied to clipboard!");
+      });
   }
 
   // Initialize
