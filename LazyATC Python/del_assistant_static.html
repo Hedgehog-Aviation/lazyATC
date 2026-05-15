@@ -152,10 +152,10 @@
 
     <div id="route-section" class="section">
       <label for="dept">Departure Airport</label>
-      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4">
+      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4" pattern="[A-Za-z]{4}">
 
       <label for="dest">Destination Airport</label>
-      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4">
+      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4" pattern="[A-Za-z]{4}">
 
       <label for="filed-route">Filed Route to Check</label>
       <input type="text" id="filed-route" placeholder="Enter full filed route">
@@ -191,6 +191,7 @@
     "Invalid Route": "Hi, your planned route seems to be invalid. Can you accept amended routing via {route}?",
     "Non-Standard Altitude": "Hi, your altitude is non-standard. I can offer you either {fl1} or {fl2}."
   };
+  const ROUTES_API_BASE_URL = "https://api.chrisgardiner.org/routes";
 
   const routeStatus = document.getElementById("route-status");
 
@@ -212,9 +213,13 @@
       alert("Please enter both departure and destination airports.");
       return null;
     }
+    if (!/^[A-Z]{4}$/.test(dept) || !/^[A-Z]{4}$/.test(dest)) {
+      alert("Please enter valid 4-letter ICAO airport codes.");
+      return null;
+    }
 
     const res = await fetch(
-      `https://api.chrisgardiner.org/routes?dept=${encodeURIComponent(dept)}&dest=${encodeURIComponent(dest)}`
+      `${ROUTES_API_BASE_URL}?dept=${encodeURIComponent(dept)}&dest=${encodeURIComponent(dest)}`
     );
     if (!res.ok) {
       throw new Error(`Route API request failed (${res.status})`);
@@ -320,8 +325,8 @@
       .then(() => alert("Copied to clipboard!"))
       .catch(() => {
         if (typeof document.execCommand === "function") {
-          document.execCommand("copy");
-          alert("Copied to clipboard!");
+          const copied = document.execCommand("copy");
+          alert(copied ? "Copied to clipboard!" : "Unable to copy automatically. Please copy the message manually.");
           return;
         }
         alert("Unable to copy automatically. Please copy the message manually.");
