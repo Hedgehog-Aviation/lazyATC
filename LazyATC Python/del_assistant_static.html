@@ -152,10 +152,10 @@
 
     <div id="route-section" class="section">
       <label for="dept">Departure Airport</label>
-      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4" pattern="[A-Za-z]{4}">
+      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4" pattern="[A-Z]{4}">
 
       <label for="dest">Destination Airport</label>
-      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4" pattern="[A-Za-z]{4}">
+      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4" pattern="[A-Z]{4}">
 
       <label for="filed-route">Filed Route to Check</label>
       <input type="text" id="filed-route" placeholder="Enter full filed route">
@@ -325,12 +325,12 @@
     navigator.clipboard.writeText(output.value)
       .then(() => alert(COPY_SUCCESS_MESSAGE))
       .catch(() => {
-        if (document.execCommand) {
+        try {
           const copied = document.execCommand("copy");
           alert(copied ? COPY_SUCCESS_MESSAGE : "Unable to copy automatically. Please copy the message manually.");
-          return;
+        } catch {
+          alert("Unable to copy automatically. Please copy the message manually.");
         }
-        alert("Unable to copy automatically. Please copy the message manually.");
       });
   }
 
