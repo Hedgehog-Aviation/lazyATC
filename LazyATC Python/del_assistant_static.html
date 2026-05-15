@@ -192,7 +192,9 @@
     "Non-Standard Altitude": "Hi, your altitude is non-standard. I can offer you either {fl1} or {fl2}."
   };
   const ROUTES_API_BASE_URL = "https://api.chrisgardiner.org/routes";
+  const ICAO_PATTERN = /^[A-Z]{4}$/;
   const COPY_SUCCESS_MESSAGE = "Copied to clipboard!";
+  const COPY_FAILURE_MESSAGE = "Unable to copy automatically. Please copy the message manually.";
 
   const routeStatus = document.getElementById("route-status");
 
@@ -214,7 +216,7 @@
       alert("Please enter both departure and destination airports.");
       return null;
     }
-    if (!/^[A-Z]{4}$/.test(dept) || !/^[A-Z]{4}$/.test(dest)) {
+    if (!ICAO_PATTERN.test(dept) || !ICAO_PATTERN.test(dest)) {
       alert("Please enter valid 4-letter ICAO airport codes.");
       return null;
     }
@@ -327,9 +329,9 @@
       .catch(() => {
         try {
           const copied = document.execCommand("copy");
-          alert(copied ? COPY_SUCCESS_MESSAGE : "Unable to copy automatically. Please copy the message manually.");
+          alert(copied ? COPY_SUCCESS_MESSAGE : COPY_FAILURE_MESSAGE);
         } catch {
-          alert("Unable to copy automatically. Please copy the message manually.");
+          alert(COPY_FAILURE_MESSAGE);
         }
       });
   }
