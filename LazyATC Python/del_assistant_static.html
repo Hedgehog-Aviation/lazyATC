@@ -76,7 +76,7 @@
       font-size: 0.9rem;
     }
 
-    input[type="text"], input[type="number"], select, textarea, button {
+    input[type="text"], input[type="number"], select, textarea {
       width: 100%;
       border-radius: 10px;
       border: 1px solid var(--panel-border);
@@ -161,10 +161,10 @@
 
     <div id="route-section" class="section">
       <label for="dept">Departure Airport</label>
-      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4" pattern="[A-Z]{4}">
+      <input type="text" id="dept" placeholder="e.g. YSSY" maxlength="4" pattern="[A-Za-z]{4}">
 
       <label for="dest">Destination Airport</label>
-      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4" pattern="[A-Z]{4}">
+      <input type="text" id="dest" placeholder="e.g. YBBN" maxlength="4" pattern="[A-Za-z]{4}">
 
       <label for="filed-route">Filed Route to Check</label>
       <input type="text" id="filed-route" placeholder="Enter full filed route">
